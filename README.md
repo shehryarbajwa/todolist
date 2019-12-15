@@ -24,16 +24,16 @@ Follow instructions to install the latest version of python for the platform in 
 ## Virtual Enviornment
 
 Use this code to download the pip package manager
-python3 -m pip install --user --upgrade pip
+- python3 -m pip install --user --upgrade pip
 
 Then install:
-python3 -m pip install --user virtualenv
+- python3 -m pip install --user virtualenv
 
 To create a virtual env:
-python3 -m venv env
+- python3 -m venv env
 
 To activate a virtual env:
-source venv/bin/activate
+- source venv/bin/activate
 
 This code is written in Python but run in a virtual environment. By using a virtual environment we minimize the risk of having dependencies that might be deprecated
 
