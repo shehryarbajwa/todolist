@@ -4,140 +4,113 @@
         <meta charset="UTF-8">
         <title>Todo App</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     </head>
     <body>
+        <div class="container">
         <h1>Todo List</h1>
-        <div>Add a new todo item: 
-        <form action="/todos/create" method="POST" id="form">
+        <div class="form-group">Add a new todo item: 
+        <form action="/todos/create" method="POST" id="form-create">
             <div class="form-row">
             <div class="col 7">
-            <input type="text" class="form-control" id="title" name="title" placeholder="Title">
+            <input type="text"  id="title" name="title" placeholder="Title">
             </div>
+            <br>
             <div class="col">
-            <input type="text" id="description" name="description" class="form-control" placeholder="Description">
+            <input type="text" id="description" name="description"  placeholder="Description">
             </div>
+            <br>
             <div class="col">
-            <input type="date" id="date" name="date" class="form-control" placeholder="Date">
-            <input type="submit">
+            <input type="date" id="date" name="date"  placeholder="Date" />
+            <br>
+            <br>
+            <input type="submit" class="btn btn btn-primary" id="submit-btn">
             </div>
             </div>
+        </form>
         </div>
-        <!-- </form>
-            Title
-            <input type="text" id="title" name="title" />
-            Description
-            <input type="text" id="description" name="description" />
-            Date
-            <input type="date" id="date" name="date" />
-            <input type="submit">
-        </form> -->
+        <div class="pending_todos">
+            Pending Todos: 
         </div>
         
         <ul id="todos">
           {% for todo in todos %}
           <li>
             <input class="check-completed" data-id="{{ todo.id }}" type="checkbox" {% if todo.completed %} checked {% endif %} />
-            {{ todo.title }}
-            <button class="delete-button" data-id="{{ todo.id }}">&cross;</button>
+            
+            Title: {{ todo.title }} 
+            <br>
+            Description: {{ todo.description }} 
+            <br>
+            Due-date: {{ todo.date }}
+            <br>
+            <button class="delete-button" data-id="{{ todo.id }}">Delete</button> 
+            <button class="edit-button" data-id="{{ todo.id }}">Edit</button>
+            <br>
           </li>
           {% endfor %}
         </ul>
+        <div>
+            <br>
+                <button class="button" aria-current="page"><a href="{{url_for('refresh_todo')}}">Update List</a></li>
+            <br>
+        </div>
+        <br>
+        <div class="completed_tasks_header">Completed Todos: </div>
+        
+            <ul>
+                {% for completed_todos in completed_todos %}
+                <li class="completed_tasks">
+                <br>
+                   Title: {{ completed_todos.title }} 
+                   <br>
+                   Description: {{ completed_todos.description }} 
+                   <br>
+                   Date: {{ completed_todos.date }}
+                   <br>
+                   <button class="delete-button" data-id="{{ completed_todos.id }}">Delete</button> 
+                   <button class="edit-button" data-id="{{ completed_todos.id }}">Edit</button>
+                </li>
+                {% endfor %}
+            </ul>
+        <div class="upcoming_tasks">
+            Upcoming Tasks: 
+        </div>
+        <ul id="upcoming_todos">
+            {% for upcoming_todos in upcoming_tasks %}
+            <li>
+                Title: {{upcoming_todos.title }} 
+                <br>
+                Description: {{upcoming_todos.description}}
+                <br>
+                Due-date: {{upcoming_todos.date}}
+                <br>
+                <button class="delete-button" data-id="{{ upcoming_todos.id }}">Delete</button>
+                <button class="edit-button" data-id="{{ upcoming_todos.id }}">Edit</button>
+            </li>
+            {% endfor %}
+        </ul>
+        <div id="edit_tasks">Edit Tasks :  </div>
+            <form id="form-edit">
+                <div class="form-row">
+                <div class="col 7">
+                <input type="text"  id="title_edit" name="title_edit" placeholder="Title">
+                </div>
+                <br>
+                <div class="col">
+                <input type="text" id="description_edit" name="description_edit"  placeholder="Description">
+                </div>
+                <br>
+                <div class="col">
+                <input type="date" id="date_edit" name="date_edit"  placeholder="Date" />
+                <br>
+                <br>
+                <button class="edit-button-form">Update Task</button>
+                </div>
+                </div>
+            </form>
+    </div>
     </body>
-    <script>
-        // Delete functionality
-        const deleteBtns = document.querySelectorAll('.delete-button');
-        for (let i = 0; i < deleteBtns.length; i++) {
-            const btn = deleteBtns[i];
-            btn.onclick = function(e) {
-            const todoId = e.target.dataset['id'];
-            fetch('/todos/' + todoId, {
-            method: 'DELETE'
-            })
-            .then(function() {
-                const item = e.target.parentElement;
-                item.remove();
-            })
-            }
-        }
-
-        // Task Completed
-        const checkboxes = document.querySelectorAll('.check-completed');
-      for (let i = 0; i < checkboxes.length; i++) {
-        const checkbox = checkboxes[i];
-        checkbox.onchange = function(e) {
-          const newCompleted = e.target.checked;
-          const todoId = e.target.dataset['id'];
-          fetch('/todos/' + todoId + '/completed', {
-            method: 'POST',
-            body: JSON.stringify({
-              'completed': newCompleted
-            }),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-          .then(function() {
-            document.getElementById('error').className = 'hidden';
-          })
-          .catch(function() {
-            document.getElementById('error').className = '';
-          })
-        }
-      }
-
-
-
-        const descInput = document.getElementById('description');
-        const titleInput = document.getElementById('title')
-        const dateInput = document.getElementById('date')
-
-      
-      document.getElementById('form').onsubmit = function(e) {
-        e.preventDefault();
-        const desc = descInput.value;
-        const title = titleInput.value;
-        const date = dateInput.value;
-
-        descInput.value = '';
-        titleInput.value = '';
-        dateInput.value = '';
-
-        fetch('/todos/create', {
-          method: 'POST',
-          body: JSON.stringify({
-            'title': title,
-            'description': desc,
-            'date': date
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        })
-        .then(response => response.json())
-        .then(jsonResponse => {
-          console.log(jsonResponse)
-          const li = document.createElement('li');
-          const checkbox = document.createElement('input');
-          checkbox.className = 'check-completed';
-          checkbox.type = 'checkbox';
-          checkbox.setAttribute('data-id', jsonResponse.id);
-          console.log(jsonResponse.id)
-          li.appendChild(checkbox);
-          
-          const text = document.createTextNode(' ' + title);
-          li.appendChild(text);
-          
-          const deleteBtn = document.createElement('button');
-          deleteBtn.className = 'delete-button';
-          deleteBtn.setAttribute('data-id', jsonResponse.id);
-          deleteBtn.innerHTML = '&cross;';
-          li.appendChild(deleteBtn);
-          document.getElementById('todos').appendChild(li);
-        })
-        .catch(function() {
-          console.error('Error occurred');
-        })
-      }
-    
-    </script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  {% block script %}{% endblock %}
 </html>
