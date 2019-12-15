@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, create_engine, Boolean, DateTime
+from sqlalchemy import Column, String, Integer, create_engine, Boolean, Date
 from sqlalchemy.orm import relationship
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -26,7 +26,7 @@ class Todo(db.Model):
     title = Column(String, nullable=False)
     description = Column(String, nullable=False)
     completed = Column(Boolean, default=False)
-    date = Column(DateTime, default=datetime.datetime.now())
+    date = Column(Date)
 
     def __init__(self, title, completed, description, date):
         self.title = title
@@ -44,6 +44,12 @@ class Todo(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+    
+    def short(self):
+        return {
+            'id': self.id,
+            'title': self.title
+        }
 
     def format(self):
         return {
@@ -53,5 +59,6 @@ class Todo(db.Model):
             'description': self.description,
             'date': self.date
         }
+     
 
         

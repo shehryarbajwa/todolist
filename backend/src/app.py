@@ -2,9 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, a
 from .database.models import setup_db, Todo, db_drop_and_create_all
 import os
 import json
+from sqlalchemy import desc
+from sqlalchemy import asc
 
 template_dir = os.path.abspath('../../frontend/templates')
-app = Flask(__name__, template_folder=template_dir)
+styles_dir = os.path.abspath('../../frontend/static')
+app = Flask(__name__, template_folder=template_dir, static_folder=styles_dir)
 app.secret_key = 'todoapp'
 setup_db(app)
 
@@ -27,8 +30,8 @@ def create_todo():
         title = data.get('title', None)
         description = data.get('description', None)
         due_date = data.get('date', None)
-        # completed = data.get('completed', None)
-        todo = Todo(title=title, description=description, completed=False, date=due_date)
+        due_date_to_str = str(due_date)
+        todo = Todo(title=title, description=description, completed=False, date=due_date_to_str)
 
         Todo.insert(todo)
         return jsonify({
@@ -40,38 +43,29 @@ def create_todo():
 
 @app.route('/todos/<int:todo_id>', methods=['PATCH'])
 def update_todo(todo_id):
-    data = json.loads(request.data)
-    title = data.get('title', None)
-    status = data.get('status', None)
-    description = data.get('description', None)
-    due_date = data.get('date', None)
-
-    try:
+    if request.data:
+        data = json.loads(request.data)
+        title = data.get('title', None)
+        description = data.get('description', None)
+        due_date = data.get('date', None)
         todo = Todo.query.filter_by(id=todo_id).one_or_none()
         if todo is None:
             abort(404)
         if title is None:
             abort(400)
-        if status is None:
-            abort(400)
         if title is not None:
             todo.title = title
-        if status is not None:
-            todo.status = status
         if description is not None:
             todo.description = description
         if due_date is not None:
-            todo.due_date = due_date
+            todo.date = due_date
         
         todo.update()
 
-        updated_todo = Todo.query.filter_by(id=todo_id).first()
-
         return jsonify({
-            'success': True,
-            'todo': update_todo
+            'success': True
         })
-    except:
+    else:
         abort(422)
 
 @app.route('/todos/<int:todo_id>/completed', methods=['POST'])
@@ -85,16 +79,29 @@ def task_completed(todo_id):
     else:
         abort(422)
 
+@app.route('/todos/search', methods=['POST'])
+def search_todos():
+    todos_query = Todo.query.filter_by(Todo.title.ilike('%' + request.form['search_term'] + '%'))
+    todos_list = list(map(Todo.short, todos_query))
 
+    response = {
+        "count": len(todos_list),
+        'data': todos_list
+    }
+
+    return render_template(
+        '/index.html',
+        results=response,
+        search_term = request.form.get('search_term', '')
+    )
 
 @app.route('/todos/<int:todo_id>', methods=['DELETE'])
 def delete_todo(todo_id):
-    todo_list_query = Todo.query.filter_by(id=todo_id).one_or_none()
+    todo_list_query = Todo.query.get(todo_id)
     if todo_list_query:
-        Todo.delete(todo_list_query)
+        todo_list_query.delete()
         return jsonify({
-            'success': True,
-            'deleted': todo_id
+            'success': True
         })
     else:
         abort(404)
@@ -103,10 +110,21 @@ def delete_todo(todo_id):
 def refresh_todo():
     return redirect(url_for('index'))
 
+
 @app.route('/')
 def index():
     todos = Todo.query.all()
-    return render_template('/index.html', todos=todos)
+    completed_todos = Todo.query.filter_by(completed=True).all()
+    upcoming_tasks = Todo.query.order_by(Todo.date.asc()).limit(10).all()
+    # todos_query = Todo.query.filter_by(Todo.title.ilike('%' + request.form['search_term'] + '%'))
+    # todos_list = list(map(Todo.short, todos_query))
+
+    # response = {
+    #     "count": len(todos_list),
+    #     'data': todos_list
+    # }
+    
+    return render_template('/index.html', todos=todos, completed_todos=completed_todos, upcoming_tasks=upcoming_tasks)
 
 #Error Handling
 
