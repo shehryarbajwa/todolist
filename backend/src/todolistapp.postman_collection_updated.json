@@ -122,11 +122,39 @@
 		},
 		{
 			"name": "DELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ddf5ecee-a43d-48b2-b9af-949d7c13145a",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"response should be okay to process\", function () {",
+							"    pm.response.to.not.be.error;",
+							"    pm.response.to.have.jsonBody(\"success\");",
+							"    pm.response.to.not.have.jsonBody(\"error\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "localhost:5000/todos/7",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"todos",
+						"7"
+					]
 				},
 				"description": "Delete a todoitem\t"
 			},
@@ -134,11 +162,61 @@
 		},
 		{
 			"name": "Patch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "71ddaaf7-ab17-44eb-9c61-dbbe178da736",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok; ",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; ",
+							"});",
+							"",
+							"pm.test(\"response should be okay to process\", function () {",
+							"    pm.response.to.not.be.error;",
+							"    pm.response.to.have.jsonBody(\"success\");",
+							"    pm.response.to.not.have.jsonBody(\"error\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PATCH",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"Gym\",\n\t\"description\":\"Workout\",\n\t\"date\":\"2019-03-22\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": ""
+					"raw": "localhost:5000/todos/3",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"todos",
+						"3"
+					]
 				},
 				"description": "Update a todoitem\t"
 			},
