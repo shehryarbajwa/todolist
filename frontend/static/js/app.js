@@ -1,8 +1,5 @@
 
 //Create new task
-
-window.onload = function () {
-  this.console.log('hello world')
   const descInput = document.getElementById('description');
   const titleInput = document.getElementById('title')
   const dateInput = document.getElementById('date')
@@ -31,7 +28,6 @@ window.onload = function () {
     })
       .then(response => response.json())
       .then(jsonResponse => {
-        console.log(jsonResponse)
         const li = document.createElement('li');
         const checkbox = document.createElement('input');
         checkbox.className = 'check-completed';
@@ -62,7 +58,6 @@ window.onload = function () {
         console.error('Error occurred');
       })
   }
-}
 
   // Task Completed
   const checkboxes = document.querySelectorAll('.check-completed');
