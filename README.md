@@ -67,3 +67,11 @@ flask run --reload
 ```
 
 The --reload flag will detect file changes and restart the server automatically.
+
+## After setup
+
+- Remember to comment out line 15 on app.py
+
+db_drop_and_create_all()
+
+This should be run only at setup and removed once setup. That way we don't reinitialize the database twice
