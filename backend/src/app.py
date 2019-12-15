@@ -12,7 +12,7 @@ app.secret_key = 'todoapp'
 setup_db(app)
 
 #Run this at setup
-#db_drop_and_create_all()
+db_drop_and_create_all()
 
 @app.route('/todos', methods=['GET'])
 def view_todo():

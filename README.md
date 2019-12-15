@@ -33,7 +33,7 @@ To create a virtual env:
 - python3 -m venv env
 
 To activate a virtual env:
-- source venv/bin/activate
+- source env/bin/activate
 
 This code is written in Python but run in a virtual environment. By using a virtual environment we minimize the risk of having dependencies that might be deprecated
 
