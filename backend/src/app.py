@@ -2,11 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, a
 from .database.models import setup_db, Todo, db_drop_and_create_all
 import os
 import json
-from sqlalchemy import desc
 from sqlalchemy import asc
 
 template_dir = os.path.abspath('../../frontend/templates')
 styles_dir = os.path.abspath('../../frontend/static')
+
 app = Flask(__name__, template_folder=template_dir, static_folder=styles_dir)
 app.secret_key = 'todoapp'
 setup_db(app)
@@ -17,6 +17,7 @@ db_drop_and_create_all()
 @app.route('/todos', methods=['GET'])
 def view_todo():
     todos = list(map(Todo.format, Todo.query.all()))
+    print(Todo.query.all())
     return jsonify({
         'success': True,
         'todos': todos
@@ -49,6 +50,7 @@ def update_todo(todo_id):
         description = data.get('description', None)
         due_date = data.get('date', None)
         todo = Todo.query.filter_by(id=todo_id).one_or_none()
+        
         if todo is None:
             abort(404)
         if title is None:
@@ -76,24 +78,10 @@ def task_completed(todo_id):
         todo.completed = completed
         todo.update()
         return redirect(url_for('index'))
+    
     else:
         abort(422)
 
-@app.route('/todos/search', methods=['POST'])
-def search_todos():
-    todos_query = Todo.query.filter_by(Todo.title.ilike('%' + request.form['search_term'] + '%'))
-    todos_list = list(map(Todo.short, todos_query))
-
-    response = {
-        "count": len(todos_list),
-        'data': todos_list
-    }
-
-    return render_template(
-        '/index.html',
-        results=response,
-        search_term = request.form.get('search_term', '')
-    )
 
 @app.route('/todos/<int:todo_id>', methods=['DELETE'])
 def delete_todo(todo_id):
@@ -116,13 +104,6 @@ def index():
     todos = Todo.query.all()
     completed_todos = Todo.query.filter_by(completed=True).all()
     upcoming_tasks = Todo.query.order_by(Todo.date.asc()).limit(10).all()
-    # todos_query = Todo.query.filter_by(Todo.title.ilike('%' + request.form['search_term'] + '%'))
-    # todos_list = list(map(Todo.short, todos_query))
-
-    # response = {
-    #     "count": len(todos_list),
-    #     'data': todos_list
-    # }
     
     return render_template('/index.html', todos=todos, completed_todos=completed_todos, upcoming_tasks=upcoming_tasks)
 

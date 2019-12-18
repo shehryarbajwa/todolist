@@ -33,11 +33,9 @@
         checkbox.className = 'check-completed';
         checkbox.type = 'checkbox';
         checkbox.setAttribute('data-id', jsonResponse.id);
-        console.log(jsonResponse.id)
         li.appendChild(checkbox);
 
         const text = document.createTextNode(' Title: ' + title + ' Description: ' + desc + ' Due-date: ' + date + ' ');
-
         li.appendChild(text);
 
         const deleteBtn = document.createElement('button');
@@ -48,7 +46,7 @@
         deleteBtn.setAttribute('data-id', jsonResponse.id);
 
         editBtn.innerHTML = 'Edit'
-        deleteBtn.innerHTML = 'Delete;';
+        deleteBtn.innerHTML = 'Delete';
         li.appendChild(deleteBtn);
         li.appendChild(editBtn)
 
@@ -86,6 +84,7 @@
   }
 
   // Delete Task
+
   const deleteBtns = document.querySelectorAll('.delete-button');
   for (let i = 0; i < deleteBtns.length; i++) {
     const btn = deleteBtns[i];
@@ -100,6 +99,7 @@
         })
     }
   }
+
   // Edit task
   
 

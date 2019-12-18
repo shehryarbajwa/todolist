@@ -27,20 +27,6 @@ ul {
 	padding: 0;
 }
 
-li * {
-	float: left;
-}
-
-li,
-h3 {
-	clear: both;
-	list-style: none;
-}
-
-input,
-button {
-	outline: none;
-}
 
 
 
@@ -109,26 +95,14 @@ li {
   background-color: seagreen;
   font-size: 20px;
 }
-/* Edit Task */
-
-.form_edit{
-	margin: 0;
-	font-size: 18px;
-	line-height: 18px;
-	text-align: center;
-	height: 18px;
-	padding: 10px;
-	border: 1px solid #ddd;
-	border-radius: 6px;
-	font-family: Lato, sans-serif;
-	color: #888;
-}
 
 #edit_tasks{
 	background-color: lightseagreen;
 	font-size: 20px;
 	display: none;
 }
+/* Edit Task */
+
 
 
 #form-edit{
