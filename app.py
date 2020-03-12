@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, abort
-from .database.models import setup_db, Todo, db_drop_and_create_all
+from .models import setup_db, Todo, db_drop_and_create_all
 import os
 import json
 from sqlalchemy import asc
@@ -17,7 +17,6 @@ db_drop_and_create_all()
 @app.route('/todos', methods=['GET'])
 def view_todo():
     todos = list(map(Todo.format, Todo.query.all()))
-    print(Todo.query.all())
     return jsonify({
         'success': True,
         'todos': todos
