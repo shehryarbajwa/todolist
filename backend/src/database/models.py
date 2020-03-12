@@ -62,4 +62,9 @@ class Todo(db.Model):
         }
      
 
+<<<<<<< HEAD
         
+=======
+if __name__ == '__main__':
+    app.run()
+>>>>>>> 21b3ea3c803c1f137868dde8bbb01971a91c6af5
