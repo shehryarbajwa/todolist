@@ -1,5 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, abort
+<<<<<<< HEAD
 from .database.models import setup_db, Todo, db_drop_and_create_all
+=======
+from database.models import setup_db, Todo, db_drop_and_create_all
+>>>>>>> 21b3ea3c803c1f137868dde8bbb01971a91c6af5
 import os
 import json
 from sqlalchemy import asc
@@ -149,5 +153,9 @@ def internal_server_error(error):
         'message': 'Internal Server Error'
     }, 500)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 21b3ea3c803c1f137868dde8bbb01971a91c6af5
 if __name__ == '__main__':
     app.run()

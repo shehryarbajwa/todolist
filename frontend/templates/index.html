@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Todo App</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+    <body>
+        <div class="container">
+        <h1>Todo List</h1>
+        <div class="form-group">Add a new todo item: 
+        <form action="/todos/create" method="POST" id="form-create">
+            <div class="form-row">
+            <div class="col 7">
+            <input type="text"  id="title" name="title" placeholder="Title">
+            </div>
+            <br>
+            <div class="col">
+            <input type="text" id="description" name="description"  placeholder="Description">
+            </div>
+            <br>
+            <div class="col">
+            <input type="date" id="date" name="date"  placeholder="Date" />
+            <br>
+            <br>
+            <input type="submit" class="btn btn btn-primary" id="submit-btn">
+            </div>
+            </div>
+        </form>
+        <div id="error" class="hidden">Something went wrong!</div>
+        </div>
+        <div class="pending_todos">
+            Pending Todos: 
+        </div>
+        
+        <ul id="todos">
+          {% for todo in todos %}
+          <li>
+            <input class="check-completed" data-id="{{ todo.id }}" type="checkbox" {% if todo.completed %} checked {% endif %} />
+            
+            Title: {{ todo.title }} 
+            <br>
+            Description: {{ todo.description }} 
+            <br>
+            Due-date: {{ todo.date }}
+            <br>
+            <button class="delete-button" data-id="{{ todo.id }}">Delete</button> 
+            <button class="edit-button" data-id="{{ todo.id }}">Edit</button>
+            <br>
+          </li>
+          {% endfor %}
+        </ul>
+        <div>
+            <br>
+                <button class="button" aria-current="page"><a href="{{url_for('refresh_todo')}}">Update List</a></li>
+            <br>
+        </div>
+        <br>
+        <div class="completed_tasks_header">Completed Todos: </div>
+        
+            <ul>
+                {% for completed_todos in completed_todos %}
+                <li class="completed_tasks">
+                <br>
+                   Title: {{ completed_todos.title }} 
+                   <br>
+                   Description: {{ completed_todos.description }} 
+                   <br>
+                   Date: {{ completed_todos.date }}
+                   <br>
+                   <button class="delete-button" data-id="{{ completed_todos.id }}">Delete</button> 
+                   <button class="edit-button" data-id="{{ completed_todos.id }}">Edit</button>
+                </li>
+                {% endfor %}
+            </ul>
+        <div class="upcoming_tasks">
+            Upcoming Tasks: 
+        </div>
+        <ul id="upcoming_todos">
+            {% for upcoming_todos in upcoming_tasks %}
+            <li>
+                Title: {{upcoming_todos.title }} 
+                <br>
+                Description: {{upcoming_todos.description}}
+                <br>
+                Due-date: {{upcoming_todos.date}}
+                <br>
+                <button class="delete-button" data-id="{{ upcoming_todos.id }}">Delete</button>
+                <button class="edit-button" data-id="{{ upcoming_todos.id }}">Edit</button>
+            </li>
+            {% endfor %}
+        </ul>
+        <div id="edit_tasks">Edit Tasks :  </div>
+            <form id="form-edit">
+                <div class="form-row">
+                <div class="col 7">
+                <input type="text"  id="title_edit" name="title_edit" placeholder="Title">
+                </div>
+                <br>
+                <div class="col">
+                <input type="text" id="description_edit" name="description_edit"  placeholder="Description">
+                </div>
+                <br>
+                <div class="col">
+                <input type="date" id="date_edit" name="date_edit"  placeholder="Date" />
+                <br>
+                <br>
+                <button class="edit-button-form">Update Task</button>
+                </div>
+                </div>
+            </form>
+    </div>
+    </body>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  {% block script %}{% endblock %}
+</html>
