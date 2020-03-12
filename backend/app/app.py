@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, abort
-from database.models import setup_db, Todo, db_drop_and_create_all
+from .database.models import setup_db, Todo, db_drop_and_create_all
 import os
 import json
 from sqlalchemy import asc
