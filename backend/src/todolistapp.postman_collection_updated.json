@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "824f041d-6e2c-4cba-b4c6-e60292eec2fe",
+		"name": "todolistapp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "11778e0d-efa1-4eff-af7e-4cb07ffcdf1c",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"value contains todolists\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.todos).to.be.an('array')",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/todos",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"todos"
+					]
+				},
+				"description": "GET requests for all todos"
+			},
+			"response": []
+		},
+		{
+			"name": "POST",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d0880b66-0722-410a-8736-d327066cdb28",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok; ",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; ",
+							"});",
+							"",
+							"pm.test(\"response should be okay to process\", function () {",
+							"    pm.response.to.not.be.error;",
+							"    pm.response.to.have.jsonBody(\"success\");",
+							"    pm.response.to.not.have.jsonBody(\"error\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "title",
+						"value": "Work",
+						"type": "text"
+					},
+					{
+						"key": "description",
+						"value": "Project",
+						"type": "text"
+					},
+					{
+						"key": "date",
+						"value": "2019-12-04",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"Project\",\n\t\"description\":\"New project\",\n\t\"date\":\"2019-03-02\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/todos/create",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"todos",
+						"create"
+					]
+				},
+				"description": "Post new todo items"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ddf5ecee-a43d-48b2-b9af-949d7c13145a",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"response should be okay to process\", function () {",
+							"    pm.response.to.not.be.error;",
+							"    pm.response.to.have.jsonBody(\"success\");",
+							"    pm.response.to.not.have.jsonBody(\"error\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/todos/7",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"todos",
+						"7"
+					]
+				},
+				"description": "Delete a todoitem\t"
+			},
+			"response": []
+		},
+		{
+			"name": "Patch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "71ddaaf7-ab17-44eb-9c61-dbbe178da736",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     pm.response.to.be.ok; ",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; ",
+							"});",
+							"",
+							"pm.test(\"response should be okay to process\", function () {",
+							"    pm.response.to.not.be.error;",
+							"    pm.response.to.have.jsonBody(\"success\");",
+							"    pm.response.to.not.have.jsonBody(\"error\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"Gym\",\n\t\"description\":\"Workout\",\n\t\"date\":\"2019-03-22\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/todos/3",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"todos",
+						"3"
+					]
+				},
+				"description": "Update a todoitem\t"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

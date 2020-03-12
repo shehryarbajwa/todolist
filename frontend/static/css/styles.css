@@ -1,0 +1,111 @@
+/* Basic Style */
+
+body {
+	background: #fff;
+	color: #333;
+	font-family: Lato, sans-serif;
+	background-color:#e4e4e4;
+}
+
+.container {
+	display: block;
+	width: 400px;
+	margin: 10px auto 100px;
+	background-color:#fff;
+	padding:0px 10px 10px 10px;
+	border-radius:10px
+}
+
+h2 {
+	text-align:center;
+	padding-top:10px;
+	margin-bottom:0px;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+
+
+
+/* Heading */
+
+input[type="text"] {
+	margin: 0;
+	font-size: 18px;
+	line-height: 18px;
+	height: 18px;
+	padding: 10px;
+	border: 1px solid #ddd;
+	background: #fff;
+	border-radius: 6px;
+	font-family: Lato, sans-serif;
+	color: #888;
+}
+
+input[type="date"] {
+	margin: 0;
+	font-size: 18px;
+	line-height: 18px;
+	height: 18px;
+	padding: 10px;
+	border: 1px solid #ddd;
+	background: #fff;
+	border-radius: 6px;
+	font-family: Lato, sans-serif;
+	color: #888;
+}
+
+
+/* New Task */
+
+
+
+/* Task list */
+
+li {
+	overflow: hidden;
+	padding: 20px 0;
+	border-bottom: 1px solid rgb(20, 18, 18);
+}
+
+
+
+
+/* Completed Tasks, Pending tasks and Upcoming Tasks*/
+
+.completed_tasks  {
+	text-decoration: line-through;
+  color: rgba(122, 12, 4, 0.5);
+  list-style: square;
+}
+
+.completed_tasks_header{
+  background-color: salmon;
+  font-size: 20px;
+}
+
+.pending_todos{
+  background-color: sandybrown;
+  font-size: 20px;
+}
+.upcoming_tasks{
+  background-color: seagreen;
+  font-size: 20px;
+}
+
+#edit_tasks{
+	background-color: lightseagreen;
+	font-size: 20px;
+	display: none;
+}
+/* Edit Task */
+
+
+
+#form-edit{
+	display: none;
+}
+
